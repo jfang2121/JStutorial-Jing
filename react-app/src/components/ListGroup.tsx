@@ -1,11 +1,19 @@
-import { Fragment } from "react";
-import { MouseEvent } from "react";
-function ListGroup() {
-  let items = ["New York", "San Francisco", "Tokyo", "London", "Paris"];
-  let selectedIndex = 0;
+import { Fragment, useState } from "react";
 
-//event handler (a click event)
-  const handleClick = (e: MouseEvent) => console.log(e.) // e: MouseEvent is type annotation
+// {items: [], heading:string}
+//use type annotation
+interface Props {
+  items: string[];
+  heading: string;
+  onSelectItem: (item: string) => void; //onclick
+}
+
+function ListGroup({ items, heading, onSelectItem }: Props) {
+  // a hook
+  const [selectedIndex, setSelectedInsex] = useState(-1);
+
+  //event handler (a click event)
+
   {
     /* if (items.length === 0)
     return (
@@ -27,14 +35,15 @@ function ListGroup() {
   //in react, you cannot return more than one element
   //<div> or <Fragment>
   //in jsx we can only use html or other react components, or using {}
+  // you can have console.log(e) or console.log(event)
   return (
-    <Fragment>
-      <h1>List</h1> {/* React.createElement('h1') */}
-      {/* Below is the most concise way. if the condition items.length is true, it will show the no item found, if false, nothing will show up on the screen */}
+    <>
+      <h1>{heading}</h1>
       {items.length === 0 && <p>No item found</p>}
+      {/* Below is the most concise way. if the condition items.length is true, it will show the no item found, if false, nothing will show up on the screen */}
       {/* {getMessage()} the benefit of using function is that function has parameters */}
       <ul className="list-group">
-        {items.map((item) => (
+        {items.map((item, index) => (
           <li>{item}</li>
         ))}
 
@@ -47,16 +56,22 @@ function ListGroup() {
         {/* mapping each item to a list item below, adding index as parameter, we can see the index of the item clicked*/}
         {items.map((item, index) => (
           <li
-            className={selectedIndex === index ? 'list-group-item active': 'list-group-item'}
+            className={
+              selectedIndex === index
+                ? "list-group-item active"
+                : "list-group-item"
+            }
             key={item}
-            {/* you can have "e" or "event"*/}
-            onClick={handleClick} 
+            onClick={() => {
+              setSelectedInsex(index);
+              onSelectItem(item);
+            }}
           >
             {item}
           </li>
         ))}
       </ul>
-    </Fragment>
+    </>
   );
 }
 
